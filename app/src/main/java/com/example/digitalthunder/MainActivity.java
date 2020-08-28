@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent i = new Intent(this, MainMenu.class);
         i.putExtra("User name", textView_name.getText());
         i.putExtra("User second name", textView_secondName.getText());
-
+        //стартуем
         startActivity(i);
     }
 

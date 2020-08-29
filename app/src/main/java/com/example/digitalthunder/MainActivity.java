@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import java.sql.*;
-
+//Test commit
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     Button Autoris_but;
     TextView textView_name;

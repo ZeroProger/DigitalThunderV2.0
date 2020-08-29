@@ -35,13 +35,14 @@ public class MainMenu extends AppCompatActivity{
 
         try{
             DocumentBuilder xml = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document doc = xml.parse(new File("database.xml"));
-            System.out.println(doc.getDocumentElement());
+            Document doc = xml.parse(new File("/sdcard/DigitalThunderData/database.xml"));
+           // System.out.println(doc.getDocumentElement());
             Element rootel = doc.getDocumentElement();
-            FileStatus.setText(rootel.getNodeName());
+            FileStatus.setText(doc.getDocumentElement().toString());
         }
         catch(Exception e){
             e.printStackTrace();
+            FileStatus.setText("Not working");
         }
     }
 

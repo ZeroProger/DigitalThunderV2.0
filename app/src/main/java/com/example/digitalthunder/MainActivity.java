@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import java.sql.*;
 //Test commit 1
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     Button Autoris_but;

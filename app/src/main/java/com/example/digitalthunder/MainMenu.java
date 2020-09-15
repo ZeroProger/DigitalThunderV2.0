@@ -42,35 +42,109 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 public class MainMenu extends AppCompatActivity implements View.OnClickListener{
 
+    private TextView UsFirstName = null;
+    private TextView UsSecondName = null;
+    private TextView FileStatus = null;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
         Bundle args = getIntent().getExtras();
-        TextView UsFirstName = (TextView) findViewById(R.id.user_name);
-        TextView UsSecondName = (TextView) findViewById(R.id.user_second_name);
-        TextView FileStatus = (TextView) findViewById(R.id.databaseStatus);
+        UsFirstName = (TextView) findViewById(R.id.user_name);
+        UsSecondName = (TextView) findViewById(R.id.user_second_name);
+        FileStatus = (TextView) findViewById(R.id.databaseStatus);
         Button updates = findViewById(R.id.updates);
 
         UsFirstName.setText(args.getCharSequence("User name"));
         UsSecondName.setText(args.getCharSequence("User second name"));
         updates.setOnClickListener(this);
-
-        try{
+        //Запуск потока на чтение базы данных
+        /*
+        Thread readDataBaseThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //ParsingXml();
+                if(VerifiDataFromXml(UsFirstName, UsSecondName).equals("Completed"))
+                {
+                    //FileStatus.setText("Пользователь подтверждён");
+                    Log.d("Статус базы", "Пользователь подтверждён");
+                }
+                else
+                {
+                    //FileStatus.setText("Пользователь не подтверждён");
+                    Log.d("Статус базы", "Пользователь не подтверждён");
+                }
+            }
+        });
+        readDataBaseThread.start();
+        */
+    }
+    //метод для парсинга xml
+    public void ParsingXml()
+    {
+        try
+        {
             DocumentBuilder xml = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document doc = xml.parse(new File("data/data/com.example.digitalthunder/files/database.xml"));
-            Element rootel = doc.getDocumentElement();
-            Log.d(doc.getXmlVersion(), "Tag name");
-            NodeList List_1 = doc.getElementsByTagName("GiftedChildren");
-            Log.d(List_1.toString(), "Nodes");
-            FileStatus.setText(doc.getDocumentElement().toString());
+            Node rootel = doc.getDocumentElement();
+            //Log.d(doc.getXmlVersion(), "Tag name");
+            //NodeList List_1 = doc.getElementsByTagName("GiftedChildren");
+            NodeList listOne = rootel.getChildNodes();
+            for(int i = 0; i < listOne.getLength(); i++)
+            {
+                Node record = listOne.item(i);
+                if(record.getNodeType() != Node.TEXT_NODE)
+                {
+                    NodeList listTwo = record.getChildNodes();
+                    for(int j = 0; j < listTwo.getLength(); j++)
+                    {
+                        Node recordsTwo = listTwo.item(j);
+                        if(recordsTwo.getNodeType() != Node.TEXT_NODE)
+                        {
+                            Log.d("Вывод:", recordsTwo.getNodeName() + ":" + recordsTwo.getTextContent());
+                        }
+                    }
+                }
+            }
+           // Log.d(List_1.toString(), "Nodes");
+           // FileStatus.setText(doc.getDocumentElement().toString());
         }
         catch(Exception e){
             e.printStackTrace();
-            FileStatus.setText("Обновите базы для загрузки файла");
+           // FileStatus.setText("Обновите базы для загрузки файла");
+            Log.d("Что-то пошло не так!!!", "Ошибка при парсинге");
         }
     }
-    public void downLoadFile(String addr, String path) throws IOException {
+    public String VerifiDataFromXml(TextView fName, TextView sName)
+    {
+        String out = "Human is wrong";
+        try {
+            DocumentBuilder xml = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            Document doc = xml.parse(new File("data/data/com.example.digitalthunder/files/database.xml"));
+            //Node rootel = doc.getDocumentElement();
+            NodeList firstNamesNodes = doc.getElementsByTagName("first_name");//Получение листа нодов по тегу <first_name>
+            NodeList secondNamesNodes = doc.getElementsByTagName("second_name");
+
+            for (int i = 0; i < firstNamesNodes.getLength() && i < secondNamesNodes.getLength(); i++)
+            {
+                if(firstNamesNodes.item(i).getTextContent().equals(fName.getText().toString()) && secondNamesNodes.item(i).getTextContent().equals(sName.getText().toString()))
+                {
+                    out = "Completed";
+                }
+                //Log.d("Names: ", firstNames.item(i).getTextContent());
+            }
+        }
+        catch (Exception e)
+        {
+            Log.d("Слышь ты, программюка", "Опять что-то пошло не так!");
+            return "Error";
+        }
+        return out;
+    }
+    public void DownLoadFile(String addr, String path) throws IOException
+    {
         URL url = null;
         BigInteger sizeOfFile = new BigInteger("1");
         URLConnection hurl = null;
@@ -90,18 +164,19 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener{
     }
 
     @Override
-    public void onClick(View view) {
-        Thread second_thread = new Thread(new Runnable() {
+    public void onClick(View view)
+    {
+        Thread secondThread = new Thread(new Runnable() {
             //@SuppressLint("SdCardPath")
             @Override
             public void run() {
                 try {
-                    downLoadFile("https://admtyumen.ru/files/opendata/7202136720-GiftedChildren/7202136720.94.2.xml", "database.xml");
+                    DownLoadFile("https://admtyumen.ru/files/opendata/7202136720-GiftedChildren/7202136720.94.2.xml", "database.xml");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         });
-        second_thread.start();
+        secondThread.start();
     }
 }

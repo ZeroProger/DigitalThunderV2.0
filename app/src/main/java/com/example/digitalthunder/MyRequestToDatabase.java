@@ -10,6 +10,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.concurrent.Exchanger;
+
 public class MyRequestToDatabase implements ValueEventListener
 {
     protected String name;
@@ -17,14 +19,15 @@ public class MyRequestToDatabase implements ValueEventListener
     FirebaseDatabase db = null;
     DatabaseReference ref = null;
     public PasswordStatus out;
-
-    MyRequestToDatabase(String name, String passwd)
+    Exchanger<PasswordStatus> exchanger;
+    MyRequestToDatabase(String name, String passwd, Exchanger<PasswordStatus> ex)
     {
         this.name = name;
         this.passwd = passwd;
         db = FirebaseDatabase.getInstance();
-        ref = db.getReference(name); // Key
+        ref = db.getReference("passwords/"+name); // Key
         Log.d("Constructor", "Created");
+        this.exchanger = ex;
     }
     public PasswordStatus getAnswer()
     {
@@ -54,17 +57,32 @@ public class MyRequestToDatabase implements ValueEventListener
             if(pass.equals(passwd))
             {
                 this.out = PasswordStatus.SUCCESSFUL;
+                try {
+                    exchanger.exchange(PasswordStatus.SUCCESSFUL);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 Log.d("Password status", "SUCCESSFUL");
             }
             else
             {
                 this.out = PasswordStatus.INCORRECT_PASSWORD;
+                try {
+                    exchanger.exchange(PasswordStatus.INCORRECT_PASSWORD);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 Log.d("Password status", "INCORRECT_PASSWORD");
             }
         }
         else
         {
             this.out = PasswordStatus.PASSWORD_NOT_FOUND;
+            try {
+                exchanger.exchange(PasswordStatus.PASSWORD_NOT_FOUND);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             Log.d("Password status", "PASSWORD_NOT_FOUND");
         }
     }

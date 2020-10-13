@@ -26,6 +26,7 @@ public class CreatingPasswordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_creating_password);
+        setTitle("Регистрация");
         Thread downloadTask = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -54,11 +55,10 @@ public class CreatingPasswordActivity extends AppCompatActivity {
             public void onClick(View view) {
                 TextView userFirstName = (TextView) findViewById(R.id.registranionFirstName);
                 TextView userSecondName = (TextView) findViewById(R.id.registrationSecondName);
-                String userSection = "null";
-                String userNumber = "null";
-                VerifyDatabaseStat databaseStat = MainActivity.VerifiDataFromXml(userFirstName.getText().toString(), userSecondName.getText().toString(), userSection, userNumber);
+                ReaderXML readerXML = new ReaderXML(userFirstName.getText().toString(), userSecondName.getText().toString());
+                readerXML.GetNamesData();
 
-                if(databaseStat == VerifyDatabaseStat.COMPLETED)
+                if(readerXML.DatabaseStat == VerifyDatabaseStat.COMPLETED)
                 {
                     TextView userLogin = (TextView) findViewById(R.id.registrationLogin);
                     TextView userPasswd = (TextView) findViewById(R.id.registrationPasswd);
@@ -69,8 +69,8 @@ public class CreatingPasswordActivity extends AppCompatActivity {
                         DatabaseReference reference = database.getReference("users");
                         reference.child(userLogin.getText().toString()).child("passwd").setValue(userPasswd.getText().toString());
                         reference.child(userLogin.getText().toString()).child("name").setValue(userFirstName.getText().toString() + " " + userSecondName.getText().toString());
-                        reference.child(userLogin.getText().toString()).child("section").setValue(userSection);
-                        reference.child(userLogin.getText().toString()).child("number").setValue(userNumber);
+                        reference.child(userLogin.getText().toString()).child("section").setValue(readerXML.Section);
+                        reference.child(userLogin.getText().toString()).child("number").setValue(readerXML.Number);
                         reference.child(userLogin.getText().toString()).child("login").setValue(userLogin.getText().toString());
 
                         Intent mainMenu = new Intent(CreatingPasswordActivity.this, MainMenu.class);
@@ -83,7 +83,7 @@ public class CreatingPasswordActivity extends AppCompatActivity {
                         Log.d("Registration", "Ошибка проверки пароля");
                     }
                 }
-                else if(databaseStat == VerifyDatabaseStat.HUMAN_IS_WRONG)
+                else if(readerXML.DatabaseStat == VerifyDatabaseStat.HUMAN_IS_WRONG)
                 {
                     Log.d("Registration", "Error of human name");
                 }
@@ -98,7 +98,7 @@ public class CreatingPasswordActivity extends AppCompatActivity {
         try {
             url = new URL(addr);
             hurl = url.openConnection();
-            Log.d(String.valueOf(hurl.getContentLength()), "WORKING!!!");
+            Log.d(String.valueOf(hurl.getContentLength()), "Downloading file");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

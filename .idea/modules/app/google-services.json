@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "908803630260",
+    "firebase_url": "https://digital-thunder-android-1n2020.firebaseio.com",
+    "project_id": "digital-thunder-android-1n2020",
+    "storage_bucket": "digital-thunder-android-1n2020.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:908803630260:android:b2bfb348ad64c287cae3e1",
+        "android_client_info": {
+          "package_name": "com.digitalthunder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "908803630260-ojit6gainttr55v6mlsncrpu1cj4fgfo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.digitalthunder",
+            "certificate_hash": "8e91ffcac25b3a2594972051c1f7174307bdc3d5"
+          }
+        },
+        {
+          "client_id": "908803630260-rr7a9vg12nt0k35jtu9pf4qcfb12ms6f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIFWWueIFIY7mVce4RJpSkYM7nRC7V6mE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "908803630260-rr7a9vg12nt0k35jtu9pf4qcfb12ms6f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

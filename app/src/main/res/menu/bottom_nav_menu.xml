@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+            android:id="@+id/navigation_profile"
+            android:icon="@drawable/ic_user_profile"
+            android:title="@string/title_profile"/>
+
+    <item
+            android:id="@+id/navigation_opportunities"
+            android:icon="@drawable/ic_opportunities"
+            android:title="@string/title_opportunities"/>
+
+    <item
+            android:id="@+id/navigation_events"
+            android:icon="@drawable/ic_events"
+            android:title="@string/title_events"/>
+
+    <item
+            android:id="@+id/navigation_chats"
+            android:icon="@drawable/ic_chats"
+            android:title="@string/title_chats"/>
+
+    <item
+            android:id="@+id/navigation_settings"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/title_settings"/>
+</menu>

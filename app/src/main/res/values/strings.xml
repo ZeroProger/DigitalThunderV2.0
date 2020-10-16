@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">DigitalThunderV2</string>
+    <string name="digitsName">абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ</string>
+    <string name="digitsPassword">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&amp;*()-_+=;:,./?\|`~[]{}</string>
+    <string name="urlToXMLDataBase">https://admtyumen.ru/files/opendata/7202136720-GiftedChildren/7202136720.94.2.xml</string>
+    <string name="logout">Выйти</string>
+    <string name="registration_email">Почта</string>
+    <string name="registration_first_name">Имя</string>
+    <string name="registration_second_name">Фамилия</string>
+    <string name="registration_password">Придумайте пароль</string>
+    <string name="registration_repeat_password">Повторите пароль</string>
+    <string name="registration_reset_password">Восстановить пароль</string>
+    <string name="entry_activity">Вход</string>
+    <string name="registration_activity">Регистрация</string>
+    <string name="title_profile">Профиль</string>
+    <string name="title_events">Мероприятия</string>
+    <string name="title_opportunities">Возможности</string>
+    <string name="title_chats">Чаты</string>
+    <string name="title_settings">Настройки</string>
+    <string name="sign_in">Войти</string>
+    <string name="sign_up">Зарегистрируйтесь</string>
+    <string name="create_account">Создать аккаунт</string>
+    <string name="email">Почта</string>
+    <string name="password">Пароль</string>
+    <string name="logo">Герб Тюменской Области</string>
+    <string name="registration_ask">У вас ещё нет учётной записи?</string>
+    <string name="hint_to_chat_message">Сообщение</string>
+    <string name="description_profile_picture_first">Добавьте фото профиля.</string>
+    <string name="description_profile_picture_second">Вашим наставникам будет легче вас находить.</string>
+    <string name="message">Сообщение</string>
+</resources>

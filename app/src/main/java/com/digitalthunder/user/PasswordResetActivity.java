@@ -1,14 +1,15 @@
-package com.example.digitalthunder;
+package com.digitalthunder.user;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 
-public class Settings extends AppCompatActivity {
+import com.digitalthunder.R;
+
+public class PasswordResetActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+        setContentView(R.layout.activity_password_reset);
     }
 }

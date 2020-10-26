@@ -9,8 +9,8 @@
     <string name="registration_second_name">Фамилия</string>
     <string name="registration_password">Придумайте пароль</string>
     <string name="registration_repeat_password">Повторите пароль</string>
-    <string name="registration_reset_password">Восстановить пароль</string>
-    <string name="entry_activity">Вход</string>
+    <string name="login_reset_password">Забыли пароль? Восстановите.</string>
+    <string name="login_activity">Вход</string>
     <string name="registration_activity">Регистрация</string>
     <string name="title_profile">Профиль</string>
     <string name="title_events">Мероприятия</string>

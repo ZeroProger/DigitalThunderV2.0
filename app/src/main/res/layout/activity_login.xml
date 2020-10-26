@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_span="1"
     android:orientation="vertical"
-    tools:context=".EntryActivity">
+    tools:context=".user.LoginActivity">
 
     <ImageView
         android:id="@+id/tyumenLogo"
@@ -20,7 +20,7 @@
         android:layout_marginBottom="32dp"
         android:contentDescription="@string/logo"
         android:scaleType="fitCenter"
-        android:src="@mipmap/tyumen_logo"/>
+        android:src="@mipmap/tyumen_logo" />
 
     <com.rengwuxian.materialedittext.MaterialEditText
         android:id="@+id/entryTextEMail"
@@ -33,13 +33,18 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
+        android:padding="4dp"
+        android:background="@color/colorWhite"
+        android:drawableStart="@drawable/ic_email"
+        android:drawablePadding="10dp"
         android:ems="10"
         android:hint="@string/email"
         android:inputType="textEmailAddress"
-        android:textAlignment="center"
+        android:textAlignment="textStart"
         android:textSize="16sp" />
 
     <com.rengwuxian.materialedittext.MaterialEditText
+        android:digits="@string/digitsPassword"
         android:id="@+id/entryTextPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,10 +55,15 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
+        android:padding="4dp"
+        android:background="@color/colorWhite"
+        android:drawableStart="@drawable/ic_password"
+        android:drawableEnd="@drawable/ic_show_pass"
+        android:drawablePadding="10dp"
         android:ems="10"
         android:hint="@string/password"
         android:inputType="textPassword"
-        android:textAlignment="center"
+        android:textAlignment="textStart"
         android:textSize="16sp" />
 
     <Button
@@ -64,26 +74,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/entryTextPassword"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
         android:layout_marginBottom="16dp"
         android:text="@string/sign_in"
         android:textAlignment="center"
-        android:textSize="14sp"
-        android:theme="@style/Theme.MyApp.EntryActivityButtons" />
+        android:textSize="13sp"
+        android:theme="@style/Theme.MyApp.EntryActivityButtons"
+        android:background="@drawable/button_style_login"/>
 
     <TextView
         android:id="@+id/resetPassword"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/entryProgressBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/entryButton"
         android:layout_marginBottom="16dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="48dp"
+        android:singleLine="true"
         android:clickable="true"
         android:ems="10"
         android:focusable="true"
         android:gravity="top"
-        android:text="@string/registration_reset_password"
+        android:text="@string/login_reset_password"
         android:textAlignment="center"
         android:textColor="@color/primary_dark"
         android:textSize="16sp"
@@ -125,11 +141,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/askToRegistration"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
         android:layout_marginBottom="32dp"
         android:text="@string/sign_up"
         android:textAlignment="center"
-        android:textSize="14sp"
-        android:theme="@style/Theme.MyApp.EntryActivityButtons" />
+        android:textSize="13sp"
+        android:theme="@style/Theme.MyApp.EntryActivityButtons"
+        android:background="@drawable/button_style_login"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,7 +3,6 @@ package com.digitalthunder.user;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -15,12 +14,18 @@ import android.os.Bundle;
 
 import com.digitalthunder.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -32,19 +37,25 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.util.Objects;
 
 public class RegistrationActivity extends AppCompatActivity {
     //log
     private static final String TAG_USER_REGISTER = "User Register in FireBase";
 
     //FireBase
-    private FirebaseAuth mAuth;
-    private DatabaseReference usersDataBase;
+    private FirebaseAuth fAuth;
+    private FirebaseUser fUser;
+    private FirebaseDatabase fDatabase;
+    private FirebaseStorage fStorage;
+    private DatabaseReference fDatabaseReference;
+    private StorageReference fStorageReference;
+    private String userID;
 
     //activity_registration.xml
     Button createAccountButton;
     FloatingActionButton setProfilePicture;
-    CircleImageView userProfilePicture;
+    CircleImageView registrationUserProfilePicture;
     Uri imageUri;
 
     @Override
@@ -55,10 +66,15 @@ public class RegistrationActivity extends AppCompatActivity {
         final ProgressBar registrationProgressBar = findViewById(R.id.registrationProgressBar);
         createAccountButton = findViewById(R.id.createAccountButton);
         setProfilePicture = findViewById(R.id.setProfilePicture);
-        userProfilePicture = findViewById(R.id.userProfilePicture);
+        registrationUserProfilePicture = findViewById(R.id.registrationUserProfilePicture);
 
-        mAuth = FirebaseAuth.getInstance();
-        usersDataBase = FirebaseDatabase.getInstance().getReference("user");
+        fAuth = FirebaseAuth.getInstance();
+        fUser = fAuth.getCurrentUser();
+        userID = fUser.getUid();
+        fDatabase = FirebaseDatabase.getInstance();
+        fStorage = FirebaseStorage.getInstance();
+        fStorageReference = FirebaseStorage.getInstance().getReference().child("image_profile_picture");
+        fDatabaseReference = fDatabase.getReference("user");
 
         Thread downloadTask = new Thread(new Runnable() {
             @Override
@@ -83,7 +99,6 @@ public class RegistrationActivity extends AppCompatActivity {
                 final EditText userRegistrationPassword = findViewById(R.id.registrationPassword);
                 final EditText userRegistrationRepeatPassword = findViewById(R.id.registrationRepeatPassword);
 
-                final String id = usersDataBase.push().getKey();
                 final String eMail = userRegistrationEMail.getText().toString();
                 final String firstName = userRegistrationFirstName.getText().toString();
                 final String secondName = userRegistrationSecondName.getText().toString();
@@ -119,22 +134,21 @@ public class RegistrationActivity extends AppCompatActivity {
                 if (password.equals(repeatPassword) && password.length() >= 10
                         && !eMail.isEmpty() && !firstName.isEmpty() && !secondName.isEmpty()) {
                     registrationProgressBar.setVisibility(View.VISIBLE);
-                    mAuth.createUserWithEmailAndPassword(eMail, password)
+                    fAuth.createUserWithEmailAndPassword(eMail, password)
                             .addOnCompleteListener(RegistrationActivity.this, new OnCompleteListener<AuthResult>() {
                                 @SuppressLint("LongLogTag")
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
-                                        mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        fAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> taskSendEMail) {
                                                 if (taskSendEMail.isSuccessful()) {
-                                                    User newUser = new User(id, eMail, firstName, secondName, password);
-                                                    Log.d(TAG_USER_REGISTER, newUser.getEMail() + ":" + newUser.getPassword());
-                                                    usersDataBase.push().setValue(newUser);
-                                                    Toast.makeText(RegistrationActivity.this, "Для завершения регистрации пройдите по ссылке в письме, " +
-                                                                                                            "отправленном вам на электронную почту.", Toast.LENGTH_LONG).show();
-                                                    startActivity(new Intent(RegistrationActivity.this, EntryActivity.class));
+                                                    UploadInfoInDataBase(eMail, firstName, secondName, password);
+                                                    VerifyEMailToast();
+
+                                                    registrationProgressBar.setVisibility(View.GONE);
+                                                    startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
                                                     finishAffinity();
                                                 } else {
                                                     String expText = taskSendEMail.getException().getMessage();
@@ -142,6 +156,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                                     if (expText.equals("The email corresponding to this action failed to send as the provided recipient email address is invalid. [ Missing recipients ]")) {
                                                         userRegistrationEMail.setError("Ошибка отправки письма подтверждения. Пожалуйста, введите корректную почту.");
                                                     }
+                                                    registrationProgressBar.setVisibility(View.GONE);
                                                 }
                                             }
                                         });
@@ -154,11 +169,11 @@ public class RegistrationActivity extends AppCompatActivity {
                                         if (expText.equals("The email address is already in use by another account.")) {
                                             userRegistrationEMail.setError("Данная почта уже используется другим пользователем.");
                                         }
+                                        registrationProgressBar.setVisibility(View.GONE);
                                     }
                                 }
                             });
                     }
-                registrationProgressBar.setVisibility(View.GONE);
             }
         });
 
@@ -166,6 +181,34 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startCrop();
+            }
+        });
+    }
+
+    private void VerifyEMailToast() {
+        Toast.makeText(RegistrationActivity.this, "Для завершения регистрации пройдите по ссылке в письме, " +
+                "отправленном вам на электронную почту.", Toast.LENGTH_LONG).show();
+    }
+
+    private void UploadInfoInDataBase(final String eMail, final String firstName, final String secondName, final String password) {
+        final StorageReference imageName = fStorageReference.child("image_" + userID);
+        imageName.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Log.d("USER_PROFILE_PICTURE", "Success");
+                imageName.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        final String imageURL = String.valueOf(uri);
+                        User newUser = new User(userID, eMail, firstName, secondName, password, imageURL);
+                        fDatabaseReference.child(userID).setValue(newUser);
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("USER_PROFILE_PICTURE", "Failure");
             }
         });
     }
@@ -180,7 +223,7 @@ public class RegistrationActivity extends AppCompatActivity {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        ReadableByteChannel rbc = Channels.newChannel(url.openStream());
+        ReadableByteChannel rbc = Channels.newChannel(Objects.requireNonNull(url).openStream());
         FileOutputStream fos = openFileOutput(path, MODE_PRIVATE);
         fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
         fos.close();
@@ -208,10 +251,10 @@ public class RegistrationActivity extends AppCompatActivity {
                 if (result != null) {
                     imageUri = result.getUri();
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
-                    userProfilePicture.setImageBitmap(bitmap);
-                }
+                    registrationUserProfilePicture.setImageBitmap(bitmap);
+               }
             }
-            catch (IOException e) {
+             catch (IOException e) {
                 e.printStackTrace();
             }
         }

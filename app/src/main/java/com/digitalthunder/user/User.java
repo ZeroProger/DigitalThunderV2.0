@@ -1,18 +1,19 @@
 package com.digitalthunder.user;
 
 public class User {
-    private String id, firstName, secondName, eMail, password;
+    private String id, firstName, secondName, eMail, password, imageURL;
 
     public User() {
 
     }
 
-    public User(String id, String eMail, String firstName, String secondName, String password) {
+    public User(String id, String eMail, String firstName, String secondName, String password, String imageURL) {
         this.id = id;
         this.firstName = firstName;
         this.secondName = secondName;
         this.eMail = eMail;
         this.password = password;
+        this.imageURL = imageURL;
     }
 
     public String getId() {
@@ -61,5 +62,13 @@ public class User {
                 firstName + " " +
                 secondName + " " +
                 password;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 }

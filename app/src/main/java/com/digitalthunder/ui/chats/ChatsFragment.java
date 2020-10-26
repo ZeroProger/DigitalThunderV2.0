@@ -56,6 +56,7 @@ public class ChatsFragment extends Fragment {
         messageSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                messageField.setText("");
                 chatsEventListener.someEvent("MESSAGE_SEND");
             }
         });

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">DigitalThunderV2</string>
     <string name="digitsName">абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ</string>
-    <string name="digitsPassword">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&amp;*()-_+=;:,./?\|`~[]{}</string>
+    <string name="digitsPassword">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890!@#$%^&amp;*()-_+=;:,./?\|`~[]{}</string>
     <string name="urlToXMLDataBase">https://admtyumen.ru/files/opendata/7202136720-GiftedChildren/7202136720.94.2.xml</string>
     <string name="logout">Выйти</string>
     <string name="registration_email">Почта</string>

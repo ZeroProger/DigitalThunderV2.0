@@ -9,6 +9,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.digitalthunder.ui.chats.ChatsFragment;
 import com.digitalthunder.ui.events.EventsFragment;
@@ -17,6 +18,7 @@ import com.digitalthunder.ui.profile.ProfileFragment;
 import com.digitalthunder.ui.profile.ProfileFragment.ProfileEventListener;
 import com.digitalthunder.ui.settings.SettingsFragment;
 import com.digitalthunder.user.LoginActivity;
+import com.digitalthunder.user.RegistrationActivity;
 import com.digitalthunder.user.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -199,7 +201,7 @@ public class MenuActivity extends AppCompatActivity implements ProfileEventListe
             startCrop();
         }
         if (s.equals("MESSAGE_SEND")) {
-
+            Toast.makeText(MenuActivity.this, "Сообщение отправлено", Toast.LENGTH_SHORT).show();
         }
     }
 

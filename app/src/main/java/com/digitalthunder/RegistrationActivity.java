@@ -171,7 +171,7 @@ public class RegistrationActivity extends AppCompatActivity {
         });
     }
 
-    private void DownLoadFile(String addr, String path) throws IOException {
+    public void DownLoadFile(String addr, String path) throws IOException {
         URL url = null;
         URLConnection hurl;
         try {

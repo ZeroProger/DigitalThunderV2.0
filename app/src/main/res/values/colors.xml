@@ -13,4 +13,5 @@
     <color name="icons">#FFFFFF</color>
     <color name="divider">#BDBDBD</color>
     <color name="error">#FF0000</color>
+    <color name="OlimpiadeNameColor">#32CD32</color>
 </resources>
